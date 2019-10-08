@@ -1,4 +1,4 @@
-semen 92000
-igor 52240
-andrey 1220
-leha 3240
+92000 semen
+52240 igor
+1220 andrey
+3240 leha

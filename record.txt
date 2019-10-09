@@ -1,4 +1,4 @@
-92000 semen
-52240 igor
-1220 andrey
-3240 leha
+andrey 30050
+egor 25000
+igor 5800
+semen 1380

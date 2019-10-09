@@ -20,15 +20,17 @@ y = 20
 print(__doc__)
 delta = 30 * x * y // time               # очки, полученные игроком
 
-file_name = 'point.txt'            # файл с текущими очками
-file_name2 = 'record.txt'          # файл с рекордными очками
-points = 0
-new_points = 0
 player = input('введите ник: ')      # никнейм игрока + очков
-changed_file = []
-changed_file2 = []
 
 def add_points():
+    
+    changed_file = []
+    changed_file2 = []
+    file_name = 'point.txt'            # файл с текущими очками
+    file_name2 = 'record.txt'          # файл с рекордными очками
+    points = 0
+    new_points = 0
+    
     with open(file_name, 'r') as f:  # ищем в файле очки игрока
         for string in f:
             if player in string:

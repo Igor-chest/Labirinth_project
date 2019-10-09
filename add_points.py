@@ -81,6 +81,7 @@ def add_points():
                         f.write(str(sort_changed_file[i][j]) + '\n')
                     else:
                         f.write(str(sort_changed_file[i][j]) + ' ')
+
 if __name__ == '__main__':
     '''
     Тело главной функции

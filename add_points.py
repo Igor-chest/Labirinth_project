@@ -57,33 +57,28 @@ def add_points():
 
     # далее идёт сортировка
 
-    for k in range(2):
 
-        sort_changed_file = []
+    sort_changed_file = []
 
-        if k == 0:
-            file_name = 'point.txt'
-        else:
-            file_name = 'record.txt'
+    file_name = 'record.txt'
 
-        with open(file_name, 'r') as f:
-            a = f.readlines()
+    with open(file_name, 'r') as f:
+        a = f.readlines()
 
-        for i in range(len(a)):
-            sort_changed_file.append(a[i].split())
+    for i in range(len(a)):
+        sort_changed_file.append(a[i].split())
 
-        sort_changed_file.sort(key=lambda i: int(i[1]))
-        sort_changed_file.reverse()
+    sort_changed_file.sort(key=lambda i: int(i[1]))
+    sort_changed_file.reverse()
 
-        with open(file_name, 'w') as f:
-            f.seek(0)
-            for i in range(len(sort_changed_file)):
-                for j in range(2):
-                    if j == 1:
-                        f.write(str(sort_changed_file[i][j]) + '\n')
-                    else:
-                        f.write(str(sort_changed_file[i][j]) + ' ')
-
+    with open(file_name, 'w') as f:
+        f.seek(0)
+        for i in range(len(sort_changed_file)):
+            for j in range(2):
+                if j == 1:
+                    f.write(str(sort_changed_file[i][j]) + '\n')
+                else:
+                    f.write(str(sort_changed_file[i][j]) + ' ')
 if __name__ == '__main__':
     '''
     Тело главной функции

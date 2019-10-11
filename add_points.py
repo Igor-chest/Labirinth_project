@@ -48,7 +48,7 @@ def add_points():
 
     new_points = points + delta
 
-    if items[0] == items2[0]:
+    if items[1] == items2[1]:
         changed_file2.append(player + ' ' + str(new_points))
         f2 = open(file_name2, 'w').write("\n".join(changed_file2))
 

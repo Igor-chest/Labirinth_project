@@ -14,23 +14,33 @@ ________________________________________________________
 Нет
 ========================================================
 '''
+def selection_sort(nums):
+    # значение i соответствует тому, сколько значений было отсортировано
+    for i in range(len(nums)):
+        # Мы предполагаем, что первый элемент несортированного сегмента является наименьшим
+        lowest_value_index = i
+        # Этот цикл перебирает несортированные элементы
+        for j in range(i + 1, len(nums)):
+            if nums[j] < nums[lowest_value_index]:
+                lowest_value_index = j
+        # Поменять местами значения самого низкого несортированного элемента с первым несортированным
+        nums[i], nums[lowest_value_index] = nums[lowest_value_index], nums[i]
+
 time = 50
 x = 20
 y = 20
 print(__doc__)
 delta = 30 * x * y // time               # очки, полученные игроком
 
+file_name = 'point.txt'            # файл с текущими очками
+file_name2 = 'record.txt'          # файл с рекордными очками
+points = 0
+new_points = 0
 player = input('введите ник: ')      # никнейм игрока + очков
+changed_file = []
+changed_file2 = []
 
 def add_points():
-    
-    changed_file = []
-    changed_file2 = []
-    file_name = 'point.txt'            # файл с текущими очками
-    file_name2 = 'record.txt'          # файл с рекордными очками
-    points = 0
-    new_points = 0
-    
     with open(file_name, 'r') as f:  # ищем в файле очки игрока
         for string in f:
             if player in string:
@@ -57,7 +67,6 @@ def add_points():
 
     # далее идёт сортировка
 
-
     sort_changed_file = []
 
     file_name = 'record.txt'
@@ -65,10 +74,22 @@ def add_points():
     with open(file_name, 'r') as f:
         a = f.readlines()
 
-    for i in range(len(a)):
-        sort_changed_file.append(a[i].split())
+    for i in range(len(line)):
+        sort_changed_file.append(line[i].split())  # неотсортированный двумерный список с никнеймами и очками
 
-    sort_changed_file.sort(key=lambda i: int(i[1]))
+    dictionary = dict(sort_changed_file)
+    dictionary = dict(zip(dictionary.values(), dictionary.keys()))  # словарь с ключом - очками и значением - никнеймом
+
+    list = []
+    for i in range(len(dictionary)):
+        list.append(int(sort_changed_file[i][1]))  # список заполненный ключами словаря(очками)
+
+    selection_sort(list)  # сортировка списка
+
+    for i in range(len(list)):
+        sort_changed_file[i][0] = dictionary[str(list[i])]
+        sort_changed_file[i][1] = list[i]  # отсортированный двумерный список
+    
     sort_changed_file.reverse()
 
     with open(file_name, 'w') as f:

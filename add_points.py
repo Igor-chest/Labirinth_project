@@ -21,7 +21,7 @@ def selection_sort(nums):
         lowest_value_index = i
         # Этот цикл перебирает несортированные элементы
         for j in range(i + 1, len(nums)):
-            if nums[j][1] < nums[lowest_value_index][1]:
+            if int(nums[j][1]) < int(nums[lowest_value_index][1]):
                 lowest_value_index = j
         # Поменять местами значения самого низкого несортированного элемента с первым несортированным
         nums[i], nums[lowest_value_index] = nums[lowest_value_index], nums[i]

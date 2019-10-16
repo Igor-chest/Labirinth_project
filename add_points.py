@@ -21,7 +21,7 @@ def selection_sort(nums):
         lowest_value_index = i
         # Этот цикл перебирает несортированные элементы
         for j in range(i + 1, len(nums)):
-            if nums[j] < nums[lowest_value_index]:
+            if nums[j][1] < nums[lowest_value_index][1]:
                 lowest_value_index = j
         # Поменять местами значения самого низкого несортированного элемента с первым несортированным
         nums[i], nums[lowest_value_index] = nums[lowest_value_index], nums[i]
@@ -34,7 +34,7 @@ player = input('введите ник: ')      # никнейм игрока + �
 
 def add_points():
     file_name = 'point.txt'                 # файл с текущими очками
-    file_name2 = 'record.txt"               # файл с рекордными очками
+    file_name2 = 'record.txt'               # файл с рекордными очками
     points = 0
     delta = 30 * x * y // time               # очки, полученные игроком
     changed_file = []
@@ -71,24 +71,12 @@ def add_points():
     file_name = 'record.txt'
 
     with open(file_name, 'r') as f:
-        line = f.readlines()
+        a = f.readlines()
 
-    for i in range(len(line)):
-        sort_changed_file.append(line[i].split())  # неотсортированный двумерный список с никнеймами и очками
+    for i in range(len(a)):
+        sort_changed_file.append(a[i].split())  # неотсортированный двумерный список с никнеймами и очками
 
-    dictionary = dict(sort_changed_file)
-    dictionary = dict(zip(dictionary.values(), dictionary.keys()))  # словарь с ключом - очками и значением - никнеймом
-
-    list = []
-    for i in range(len(dictionary)):
-        list.append(int(sort_changed_file[i][1]))  # список заполненный ключами словаря(очками)
-
-    selection_sort(list)  # сортировка списка
-
-    for i in range(len(list)):
-        sort_changed_file[i][0] = dictionary[str(list[i])]
-        sort_changed_file[i][1] = list[i]  # отсортированный двумерный список
-    
+    selection_sort(sort_changed_file)  # сортировка списка
     sort_changed_file.reverse()
 
     with open(file_name, 'w') as f:

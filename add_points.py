@@ -30,17 +30,16 @@ time = 50
 x = 20
 y = 20
 print(__doc__)
-delta = 30 * x * y // time               # очки, полученные игроком
-
-file_name = 'point.txt'            # файл с текущими очками
-file_name2 = 'record.txt'          # файл с рекордными очками
-points = 0                          # !!! нужно поставить после 43 строки (иначе points в 37 и 48 строках - разные переменные)
-new_points = 0
 player = input('введите ник: ')      # никнейм игрока + очков
-changed_file = []
-changed_file2 = []
 
 def add_points():
+    file_name = 'point.txt'                 # файл с текущими очками
+    file_name2 = 'record.txt"               # файл с рекордными очками
+    points = 0
+    delta = 30 * x * y // time               # очки, полученные игроком
+    changed_file = []
+    changed_file2 = []
+    new_points = 0
     with open(file_name, 'r') as f:  # ищем в файле очки игрока
         for string in f:
             if player in string:
@@ -72,9 +71,9 @@ def add_points():
     file_name = 'record.txt'
 
     with open(file_name, 'r') as f:
-        a = f.readlines()           # !!! Нигде не используется
+        line = f.readlines()
 
-    for i in range(len(line)):      # !!! Что такое line?
+    for i in range(len(line)):
         sort_changed_file.append(line[i].split())  # неотсортированный двумерный список с никнеймами и очками
 
     dictionary = dict(sort_changed_file)

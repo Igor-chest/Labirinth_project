@@ -1,4 +1,4 @@
-# управление: работают кнопки статистика и выход,
+# управление: работают кнопки статистика, настройки и выход,
 # переключение между разделами осуществляется путем нажатия клавиш вверх и вниз,
 # чтобы выбрать раздел в меню нужно нажать пробел,
 # чтобы выйти из раздела нужно нажать esc
@@ -49,9 +49,9 @@ def main_menu():
     DrawText('Выход', font, surface_menu, xq, yq)
 
     pygame.draw.circle(surface_menu, font_color, (int(xg) - 19, int(yg) + 23), 15)
-    xcirc = int(xg) - 19
-    ycirc = int(yg) + 23
-    dycirc = int(yg) + 23
+    x_circle = int(xg) - 19
+    y_circle = int(yg) + 23
+    dy_circle = y_circle
 
     done = True
     while done:
@@ -63,63 +63,64 @@ def main_menu():
 
             if i.type == pygame.KEYDOWN:
                 if i.key == pygame.K_UP:
-                    if ycirc == dycirc:
-                        pygame.draw.circle(surface_menu, bgcolor, (xcirc, ycirc), 15)
-                        ycirc += 150
-                        pygame.draw.circle(surface_menu, font_color, (xcirc, ycirc), 15)
+                    if y_circle == dy_circle:
+                        pygame.draw.circle(surface_menu, bgcolor, (x_circle, y_circle), 15)
+                        y_circle += 150
+                        pygame.draw.circle(surface_menu, font_color, (x_circle, y_circle), 15)
                     else:
-                        pygame.draw.circle(surface_menu, bgcolor, (xcirc, ycirc), 15)
-                        ycirc -= 50
-                        pygame.draw.circle(surface_menu, font_color, (xcirc, ycirc), 15)
+                        pygame.draw.circle(surface_menu, bgcolor, (x_circle, y_circle), 15)
+                        y_circle -= 50
+                        pygame.draw.circle(surface_menu, font_color, (x_circle, y_circle), 15)
                 if i.key == pygame.K_DOWN:
-                    if ycirc == dycirc + 150:
-                        pygame.draw.circle(surface_menu, bgcolor, (xcirc, ycirc), 15)
-                        ycirc -= 150
-                        pygame.draw.circle(surface_menu, font_color, (xcirc, ycirc), 15)
+                    if y_circle == dy_circle + 150:
+                        pygame.draw.circle(surface_menu, bgcolor, (x_circle, y_circle), 15)
+                        y_circle -= 150
+                        pygame.draw.circle(surface_menu, font_color, (x_circle, y_circle), 15)
                     else:
-                        pygame.draw.circle(surface_menu, bgcolor, (xcirc, ycirc), 15)
-                        ycirc += 50
-                        pygame.draw.circle(surface_menu, font_color, (xcirc, ycirc), 15)
+                        pygame.draw.circle(surface_menu, bgcolor, (x_circle, y_circle), 15)
+                        y_circle += 50
+                        pygame.draw.circle(surface_menu, font_color, (x_circle, y_circle), 15)
                 if i.key == pygame.K_SPACE:
-                    if ycirc == dycirc + 100:
+                    if y_circle == dy_circle + 100:
                         statistics()
-                    if ycirc == dycirc + 150:
+                    if y_circle == dy_circle + 150:
                         sys.exit()
+                    if y_circle == dy_circle + 50:
+                        settings()
             if i.type == pygame.QUIT:
                 done = False
-
 
 def statistics():
 
     surface_menu.blit(surface_menu, (0, 0))
     surface_menu.fill(bgcolor)
+
+    font = pygame.font.Font(None, 72)
+    DrawText('Статистика', font, surface_menu, (surface_width / 2) - 150, (surface_height / 2.5) - 220)
+
     font = pygame.font.Font(None, 32)
 
-    file_name = 'point.txt'
-    with open(file_name, 'r') as f:
-        a = f.readlines()
-    bajo = -200
+    for j in range(2):
+        step = - 380
+        bajo = -100
 
-    DrawText('текущие очки:', font, surface_menu, (surface_width / 2) - 380, (surface_height / 2.5) + bajo)
-    bajo += 20
+        if j == 0:
+            file_name = 'point.txt'
+            txt = 'текущие очки:'
+        else:
+            file_name = 'record.txt'
+            txt = 'Максимальные очки:'
+            step += 180
 
-    for i in range(len(a)):
-        bajo += 25
-        a[i] = a[i].rstrip()
-        DrawText(a[i], font, surface_menu, (surface_width / 2) - 380, (surface_height / 2.5) + bajo)
+        with open(file_name, 'r') as f:
+            a = f.readlines()
 
-    file_name = 'record.txt'
-    with open(file_name, 'r') as f:
-        a = f.readlines()
-    bajo = -200
+        DrawText(txt, font, surface_menu, (surface_width / 2) + step, (surface_height / 2.5) + bajo)
 
-    DrawText('Максимальные очки:', font, surface_menu, (surface_width / 2) - 200, (surface_height / 2.5) + bajo)
-    bajo += 20
-
-    for i in range(len(a)):
-        bajo += 25
-        a[i] = a[i].rstrip()
-        DrawText(a[i], font, surface_menu, (surface_width / 2) - 200, (surface_height / 2.5) + bajo)
+        for i in range(len(a)):
+            bajo += 25
+            a[i] = a[i].rstrip()
+            DrawText(a[i], font, surface_menu, (surface_width / 2) + step, (surface_height / 2.5) + bajo)
 
     done = True
     while done:
@@ -130,8 +131,31 @@ def statistics():
         for i in pygame.event.get():
             if i.key == pygame.K_ESCAPE:
                 main_menu()
+                break
+            if i.type == pygame.QUIT:
+                done = False
+
+def settings():
+
+    surface_menu.blit(surface_menu, (0, 0))
+    surface_menu.fill(bgcolor)
+
+    font = pygame.font.Font(None, 72)
+    DrawText('Настройки', font, surface_menu, (surface_width / 2) - 150, (surface_height / 2.5) - 220)
+
+    done = True
+    while done:
+
+        surface_menu.blit(surface_menu, (0, 0))
+        pygame.display.flip()
+
+        for i in pygame.event.get():
+            if i.key == pygame.K_ESCAPE:
+                main_menu()
+                break
             if i.type == pygame.QUIT:
                 done = False
 
 main_menu()
 #statistics()
+#settings()

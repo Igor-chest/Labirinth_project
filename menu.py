@@ -80,7 +80,7 @@ def main_menu():
                         pygame.draw.circle(surface_menu, bgcolor, (x_circle, y_circle), 15)
                         y_circle -= 50
                         pygame.draw.circle(surface_menu, font_color, (x_circle, y_circle), 15)
-                if i.key == pygame.K_DOWN:    # перемещение круга либо на один раздел вниз, либо в самый верх, если вниз некуда
+                elif i.key == pygame.K_DOWN:    # перемещение круга либо на один раздел вниз, либо в самый верх, если вниз некуда
                     if y_circle == dy_circle + 150:
                         pygame.draw.circle(surface_menu, bgcolor, (x_circle, y_circle), 15)
                         y_circle -= 150
@@ -89,7 +89,7 @@ def main_menu():
                         pygame.draw.circle(surface_menu, bgcolor, (x_circle, y_circle), 15)
                         y_circle += 50
                         pygame.draw.circle(surface_menu, font_color, (x_circle, y_circle), 15)
-                if i.key == pygame.K_SPACE:    # вызов соответствующей функции(раздела справа от круга) при нажатии пробела
+                elif i.key == pygame.K_SPACE:    # вызов соответствующей функции(раздела справа от круга) при нажатии пробела
                     if y_circle == dy_circle + 100:
                         statistics()
                     if y_circle == dy_circle + 150:

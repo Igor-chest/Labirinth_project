@@ -1,0 +1,102 @@
+import pygame
+import time
+import sys
+
+def DrawText(text, font, surface_menu, x, y):
+    textobj = font.render(text, 1, font_color)
+    textrect = textobj.get_rect()
+    textrect.topleft = (x, y)
+    surface_menu.blit(textobj, textrect)
+
+pygame.font.init()
+fonf = pygame.font.Font(None, 72)
+
+bgcolor = (150, 50, 100)
+right_panel = (50, 50, 100)
+font_color = (255, 255, 153)
+
+surface_width = 800
+surface_height = 600
+
+surface_menu = pygame.display.set_mode([surface_width, surface_height])
+
+pygame.display.set_caption("Labirinth")
+
+surface_menu.fill(bgcolor)
+
+def game_play(x, y):
+
+    surface_menu.blit(surface_menu, (0, 0))
+    surface_menu.fill(bgcolor)
+
+    pygame.draw.rect(surface_menu, right_panel, (600, 0, 600, 800))
+
+    map = labGen(x, y)
+
+    size = surface_height / x
+
+    xdraw = 0
+    ydraw = 0
+
+    for i in range(x):
+        for j in range(y):
+            if map[i][j] == 2 or map[i][j] == 'f':  # проход
+                gamedraw = (100, 150, 100)
+            elif map[i][j] == 3:   # игрок
+                xpl = j * size
+                ypl = i * size
+                gamedraw = (180, 50, 100)
+            else:   # стена
+                gamedraw = (0, 0, 0)
+            pygame.draw.rect(surface_menu, gamedraw, (xdraw, ydraw, size, size))
+            xdraw += size
+        xdraw = 0
+        ydraw += size
+
+    done_game = True
+    while done_game:
+
+        surface_menu.blit(surface_menu, (0, 0))
+        pygame.display.flip()
+
+        for igame in pygame.event.get():
+            if igame.type == pygame.KEYDOWN:
+                if igame.key == pygame.K_ESCAPE:
+                    main_menu()
+                elif igame.key == pygame.K_DOWN:
+                    if map[int(ypl / size) + 1][int(xpl / size)] == 2 or map[int(ypl / size) + 1][int(xpl / size)] == 3 or map[int(ypl / size) + 1][int(xpl / size)] == 'f':
+                        gamedraw = (100, 150, 100)
+                        pygame.draw.rect(surface_menu, gamedraw, (xpl, ypl, size, size))
+                        ypl += size
+                        gamedraw = (180, 50, 100)
+                        pygame.draw.rect(surface_menu, gamedraw, (xpl, ypl, size, size))
+                elif igame.key == pygame.K_UP:
+                    if map[int(ypl / size) - 1][int(xpl / size)] == 2 or map[int(ypl / size) - 1][int(xpl / size)] == 3 or map[int(ypl / size) - 1][int(xpl / size)] == 'f':
+                        gamedraw = (100, 150, 100)
+                        pygame.draw.rect(surface_menu, gamedraw, (xpl, ypl, size, size))
+                        ypl -= size
+                        gamedraw = (180, 50, 100)
+                        pygame.draw.rect(surface_menu, gamedraw, (xpl, ypl, size, size))
+                elif igame.key == pygame.K_LEFT:
+                    if map[int(ypl / size)][int(xpl / size) - 1] == 2 or map[int(ypl / size)][int(xpl / size) - 1] == 3 or map[int(ypl / size)][int(xpl / size) - 1] == 'f':
+                        gamedraw = (100, 150, 100)
+                        pygame.draw.rect(surface_menu, gamedraw, (xpl, ypl, size, size))
+                        xpl -= size
+                        gamedraw = (180, 50, 100)
+                        pygame.draw.rect(surface_menu, gamedraw, (xpl, ypl, size, size))
+                elif igame.key == pygame.K_RIGHT:
+                    if map[int(ypl / size)][int(xpl / size) + 1] == 2 or map[int(ypl / size)][int(xpl / size) + 1] == 3 or map[int(ypl / size)][int(xpl / size) + 1] == 'f':
+                        gamedraw = (100, 150, 100)
+                        pygame.draw.rect(surface_menu, gamedraw, (xpl, ypl, size, size))
+                        xpl += size
+                        gamedraw = (180, 50, 100)
+                        pygame.draw.rect(surface_menu, gamedraw, (xpl, ypl, size, size))
+            if map[int(ypl / size)][int(xpl / size) - 1] == 'f':
+                surface_menu.fill(bgcolor)
+                pygame.font.init()
+                font = pygame.font.Font(None, 72)
+                DrawText('Вы прошли уровень!!!', font, surface_menu, (surface_width / 2) - 270, (surface_height / 2.5) - 220)
+            if igame.type == pygame.QUIT:
+                sys.exit()
+x = 20
+y = 20

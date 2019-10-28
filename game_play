@@ -1,5 +1,5 @@
 import pygame
-import time
+import gen
 import sys
 
 def DrawText(text, font, surface_menu, x, y):

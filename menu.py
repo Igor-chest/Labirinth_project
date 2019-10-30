@@ -5,8 +5,6 @@
 
 import pygame
 import sys
-from gen import *
-from add_points import *
 from game_play import *
 # функция вывода текста на экран
 

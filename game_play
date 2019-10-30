@@ -1,30 +1,4 @@
-import pygame
-import gen
-import sys
-
-def DrawText(text, font, surface_menu, x, y):
-    textobj = font.render(text, 1, font_color)
-    textrect = textobj.get_rect()
-    textrect.topleft = (x, y)
-    surface_menu.blit(textobj, textrect)
-
-pygame.font.init()
-fonf = pygame.font.Font(None, 72)
-
-bgcolor = (150, 50, 100)
-right_panel = (50, 50, 100)
-font_color = (255, 255, 153)
-
-surface_width = 800
-surface_height = 600
-
-surface_menu = pygame.display.set_mode([surface_width, surface_height])
-
-pygame.display.set_caption("Labirinth")
-
-surface_menu.fill(bgcolor)
-
-def game_play(x, y):
+def game_play(x, y, player):
 
     surface_menu.blit(surface_menu, (0, 0))
     surface_menu.fill(bgcolor)
@@ -32,7 +6,6 @@ def game_play(x, y):
     pygame.draw.rect(surface_menu, right_panel, (600, 0, 600, 800))
 
     map = labGen(x, y)
-
     size = surface_height / x
 
     xdraw = 0
@@ -53,38 +26,59 @@ def game_play(x, y):
         xdraw = 0
         ydraw += size
 
+    time_out = 0
+
     done_game = True
     while done_game:
 
         surface_menu.blit(surface_menu, (0, 0))
         pygame.display.flip()
 
+        font = pygame.font.Font(None, 52)
+
+        time_out += 1
+        pygame.draw.rect(surface_menu, right_panel, (600, 0, 600, 800))
+        DrawText('время: ' + str(time_out // 85), font, surface_menu, 610, 50)
+
+        file_name = 'point.txt'
+        changed_file = []
+        with open(file_name, 'r') as f:  # ищем в файле очки игрока
+            for string in f:
+                if player in string:
+                    items = string.split()
+                    points = int(items[1])
+                else:
+                    changed_file.append(string.rstrip())
+        DrawText(player + ' ' + str(points), font, surface_menu, 610, 100)
+
+        font = pygame.font.Font(None, 72)
+
         for igame in pygame.event.get():
             if igame.type == pygame.KEYDOWN:
                 if igame.key == pygame.K_ESCAPE:
                     main_menu()
-                elif igame.key == pygame.K_DOWN:
+                elif igame.key == pygame.K_DOWN or igame.key == pygame.K_s:
                     if map[int(ypl / size) + 1][int(xpl / size)] == 2 or map[int(ypl / size) + 1][int(xpl / size)] == 3 or map[int(ypl / size) + 1][int(xpl / size)] == 'f':
                         gamedraw = (100, 150, 100)
                         pygame.draw.rect(surface_menu, gamedraw, (xpl, ypl, size, size))
                         ypl += size
                         gamedraw = (180, 50, 100)
                         pygame.draw.rect(surface_menu, gamedraw, (xpl, ypl, size, size))
-                elif igame.key == pygame.K_UP:
+                elif igame.key == pygame.K_UP or igame.key == pygame.K_w:
                     if map[int(ypl / size) - 1][int(xpl / size)] == 2 or map[int(ypl / size) - 1][int(xpl / size)] == 3 or map[int(ypl / size) - 1][int(xpl / size)] == 'f':
                         gamedraw = (100, 150, 100)
                         pygame.draw.rect(surface_menu, gamedraw, (xpl, ypl, size, size))
                         ypl -= size
                         gamedraw = (180, 50, 100)
                         pygame.draw.rect(surface_menu, gamedraw, (xpl, ypl, size, size))
-                elif igame.key == pygame.K_LEFT:
+                elif igame.key == pygame.K_LEFT or igame.key == pygame.K_a:
                     if map[int(ypl / size)][int(xpl / size) - 1] == 2 or map[int(ypl / size)][int(xpl / size) - 1] == 3 or map[int(ypl / size)][int(xpl / size) - 1] == 'f':
                         gamedraw = (100, 150, 100)
                         pygame.draw.rect(surface_menu, gamedraw, (xpl, ypl, size, size))
                         xpl -= size
                         gamedraw = (180, 50, 100)
                         pygame.draw.rect(surface_menu, gamedraw, (xpl, ypl, size, size))
-                elif igame.key == pygame.K_RIGHT:
+                elif igame.key == pygame.K_RIGHT or igame.key == pygame.K_d:
                     if map[int(ypl / size)][int(xpl / size) + 1] == 2 or map[int(ypl / size)][int(xpl / size) + 1] == 3 or map[int(ypl / size)][int(xpl / size) + 1] == 'f':
                         gamedraw = (100, 150, 100)
                         pygame.draw.rect(surface_menu, gamedraw, (xpl, ypl, size, size))
@@ -93,10 +87,21 @@ def game_play(x, y):
                         pygame.draw.rect(surface_menu, gamedraw, (xpl, ypl, size, size))
             if map[int(ypl / size)][int(xpl / size) - 1] == 'f':
                 surface_menu.fill(bgcolor)
-                pygame.font.init()
-                font = pygame.font.Font(None, 72)
+                time_stop = str(time_out // 100)
                 DrawText('Вы прошли уровень!!!', font, surface_menu, (surface_width / 2) - 270, (surface_height / 2.5) - 220)
-            if igame.type == pygame.QUIT:
+                if int(time_stop) // 10 == 1:
+                    seconds_draw = ' секунд'
+                elif int(time_stop) % 10 == 1:
+                    seconds_draw = ' секунда'
+                elif int(time_stop) % 10 == 2 or int(time_stop) % 10 == 3 or int(time_stop) % 10 == 4:
+                    seconds_draw = ' секунды'
+                else:
+                    seconds_draw = ' секунд'
+                DrawText('Ваше время: ' + time_stop + seconds_draw, font, surface_menu, (surface_width / 2) - 250, (surface_height / 2.5) - 165)
+                map[int(ypl / size)][int(xpl / size) - 1] = 'fd'
+                delta = add_points(x, y, time_out, player)
+                DrawText('Полученные очки: ' + str(delta), font, surface_menu, (surface_width / 2) - 230, (surface_height / 2.5) - 115)
+                done_game = False
+            elif igame.type == pygame.QUIT:
                 sys.exit()
-x = 20
-y = 20
+

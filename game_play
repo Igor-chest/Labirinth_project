@@ -1,3 +1,30 @@
+import pygame
+import sys
+from gen import *
+from add_points import *
+
+def DrawText(text, font, surface_menu, x, y):
+    textobj = font.render(text, 1, font_color)
+    textrect = textobj.get_rect()
+    textrect.topleft = (x, y)
+    surface_menu.blit(textobj, textrect)
+
+pygame.font.init()
+fonf = pygame.font.Font(None, 72)    # шрифт
+
+bgcolor = (150, 50, 100)     # цвет заднего фона
+font_color = (255, 255, 153)       # цвет текста
+right_panel = (50, 50, 100)
+
+surface_width = 800         # ширина экрана
+surface_height = 600         # высота экрана
+
+surface_menu = pygame.display.set_mode([surface_width, surface_height])         # создание окна
+
+pygame.display.set_caption("Labirinth")       # название окна
+
+surface_menu.fill(bgcolor)
+
 def game_play(x, y, player):
 
     surface_menu.blit(surface_menu, (0, 0))
@@ -104,4 +131,3 @@ def game_play(x, y, player):
                 done_game = False
             elif igame.type == pygame.QUIT:
                 sys.exit()
-

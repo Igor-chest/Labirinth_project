@@ -1,19 +1,3 @@
-'''
-========================================================
-Назначение:
-Подсчитыавет очки игрока за игру, прибавляет их
-к текущим(если это не 1 уровень) и сохраняет их в файл.
-________________________________________________________
-Входные данные:
-
-Размер карты x * y
-Время игры
-Имя игрока
-________________________________________________________
-Результат:
-Нет
-========================================================
-'''
 def selection_sort(nums):
     # значение i соответствует тому, сколько значений было отсортировано
     for i in range(len(nums)):
@@ -21,25 +5,25 @@ def selection_sort(nums):
         lowest_value_index = i
         # Этот цикл перебирает несортированные элементы
         for j in range(i + 1, len(nums)):
-            if int(nums[j][1]) < int(nums[lowest_value_index][1]):
+            if nums[j][1] < nums[lowest_value_index][1]:
                 lowest_value_index = j
         # Поменять местами значения самого низкого несортированного элемента с первым несортированным
         nums[i], nums[lowest_value_index] = nums[lowest_value_index], nums[i]
 
-time = 50
-x = 20
-y = 20
-print(__doc__)
-player = input('введите ник: ')      # никнейм игрока + очков
+#time_out = 50
+#x = 20
+#y = 20
+#print(__doc__)
+#player = input('введите ник: ')      # никнейм игрока
 
-def add_points():
+def add_points(x, y, time_out, player):
     file_name = 'point.txt'                 # файл с текущими очками
     file_name2 = 'record.txt'               # файл с рекордными очками
     points = 0
-    delta = 30 * x * y // time               # очки, полученные игроком
+    delta = 100 * x * y // time_out               # очки, полученные игроком
     changed_file = []
     changed_file2 = []
-    new_points = 0
+
     with open(file_name, 'r') as f:  # ищем в файле очки игрока
         for string in f:
             if player in string:
@@ -87,8 +71,4 @@ def add_points():
                     f.write(str(sort_changed_file[i][j]) + '\n')
                 else:
                     f.write(str(sort_changed_file[i][j]) + ' ')
-if __name__ == '__main__':
-    '''
-    Тело главной функции
-    '''
-    add_points()
+    return(delta)

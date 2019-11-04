@@ -12,7 +12,6 @@ angles = [[1, 1], [1, -1], [-1, 1],
 Функция line создаёт 1 ответвление от лабиринта за вызов.
 Ответвление генерируется начиная со случайного незанятого места и заканчивается когда соеденится с уже сгенерированной 
 частью лабиринта(при первом вызове это только клетка start)
-
 на вход подаётся:
 x,y - размер лабиринта по x и по y
 zCount - кол-во не занятых клеток
@@ -62,7 +61,6 @@ def gen(x,y):
 
 '''
 удлиняет ответвление на 1 клетку.
-
 point - текущая позиция. [x,y]
 way - направление шага. [0,-1/1]/[-1/1,0](влево/вправо/вверх/вниз)
 zCount - кол-во незанятого места
@@ -82,7 +80,6 @@ def step(map,point,way,zCount,block,ink):
 
 '''
 проверяет есть ли путь у ветки  до лабиринта
-
 x,y - размер лабиринта по x и по y
 point - текущая позиция. [x,y]
 way - направление шага. [0,-1/1]/[-1/1,0](влево/вправо/вверх/вниз)
@@ -113,13 +110,11 @@ def choose(map,x,y,point,way,sym,road,nSym):
                 possible.append([i[0]+j[0],i[1]+j[1]])
     return flag
 
-
-
-def labGen(x,y):     #MAIN
+def labGen(x, y):     #MAIN
     map = gen(x, y)
     start = [random.randint(1, x - 2), 1]
     zCount = (x - 2) * (y - 2) - 2
-    plain = zCount   #кол-во пустых клеток в пустом поле для лабиринта
+    plain = zCount   # кол-во пустых клеток в пустом поле для лабиринта
     finish = [random.randint(1, x - 2), y - 2]
     for i in range(x):
         for j in range(y):
@@ -146,32 +141,53 @@ def labGen(x,y):     #MAIN
             print('/', zCount)
             break
     line(map,x, y, zCount, finish)
-    map[start[0]][0] = 2
+
+    map[start[0]][0] = 1
     map[finish[0]][y - 1] = 2
 
-    for i in range(x):
-        for j in range(y):
-            if map[i][j] == 2:
-                print(green+'█'+end, end='')
-            else:
-                print(grey+'█'+end, end='')
-        print()
-    map[start[0]][start[1]]='s'
-    map[finish[0]][finish[1]]='f'
+    map[start[0]][start[1]] = 3
+    map[finish[0]][finish[1]] = 'f'
     return map
 
-'''
-генерирует и сохраняет лабиринт в фаил
+# функция загрузки стороны лабиринта из файла
 
-х - высота
-у - ширина
-fName - имя файла, куда сохранять
+def downloadGen(player):
+    changed_file_load = []
+
+    with open('save.txt', 'r') as f:  # ищем в файле очки игрока
+        for string in f:
+            if player in string:
+                items = string.split()
+                x = int(items[1])
+            else:
+                changed_file_load.append(string.rstrip())  # .rstrip() удаляет символ \n
+    return(x)
+
+# функция сохранения стороны лабиринта в файл
+
+def saveGen(player):
+    changed_file_save = []
+    with open('save.txt', 'r') as f:  # ищем в файле очки игрока
+        for string in f:
+            if player in string:
+                items = string.split()
+                x = int(items[1])
+            else:
+                changed_file_save.append(string.rstrip())  # .rstrip() удаляет символ \n
+
+    changed_file_save.append(player + ' ' + str(x + 2))  # добавляем в файл информацию об очках игрока
+    open('save.txt', 'w').write("\n".join(changed_file_save))
+
+
 '''
-def saveGen(fName,x,y):
-    map=labGen(x,y)
-    file = open(fName,'w')
-    file.write(str(y)+'\n')
-    for i in range(x):
-        for j in range(y):
-            file.write(str(map[i][j]))
-    file.close()
+for i in range(x):
+    for j in range(y):
+        if map[i][j] == 2:
+            print(green+'█'+end, end='')
+        else:
+            print(grey+'█'+end, end='')
+    print()
+map[start[0]][start[1]]='s'
+map[finish[0]][finish[1]]='f'
+'''
+

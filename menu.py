@@ -17,8 +17,8 @@ def DrawText(text, font, surface_menu, x, y):
 pygame.font.init()
 fonf = pygame.font.Font(None, 72)    # шрифт
 
-bgcolor = (150, 50, 100)     # цвет заднего фона
-font_color = (255, 255, 153)       # цвет текста
+bgcolor = (10, 50, 100)     # цвет заднего фона
+font_color = (180, 60, 0)       # цвет текста
 right_panel = (50, 50, 100)
 
 surface_width = 800         # ширина экрана
@@ -33,6 +33,8 @@ surface_menu.fill(bgcolor)         # покраска окна в цвет за�
 # функция главного меню
 
 def main_menu():
+
+    x = downloadGen(player)
 
     surface_menu.fill(bgcolor)
 
@@ -100,7 +102,7 @@ def main_menu():
                     elif y_circle == dy_circle + 50:
                         settings()
                     elif y_circle == dy_circle:
-                        game_play(x, y, player)
+                        game_play(x, player)
             elif i.type == pygame.QUIT:
                 sys.exit()
 
@@ -174,7 +176,18 @@ def statistics():
                     main_menu()
             if istat.type == pygame.QUIT:
                 sys.exit()
-x = 40
-y = 40
+#x = 50
+#y = 50
 player = 'igor'
 main_menu()
+#statistics()
+#settings()
+#game_play()
+'''
+                done_game_over = True
+                while done_game_over:
+                    for igameover in pygame.event.get():
+                        if igameover.type == pygame.KEYDOWN:
+                            if igameover.key == pygame.K_ESCAPE:
+                                main_menu()
+'''

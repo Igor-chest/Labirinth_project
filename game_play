@@ -11,7 +11,7 @@ def DrawText(text, font, surface_menu, x, y):
     surface_menu.blit(textobj, textrect)
 
 pygame.font.init()
-fonf = pygame.font.Font(None, 72)    # шрифт
+font = pygame.font.Font(None, 72)    # шрифт
 
 bgcolor = (10, 50, 100)     # цвет заднего фона
 font_color = (180, 60, 0)       # цвет текста
@@ -26,7 +26,8 @@ pygame.display.set_caption("Labirinth")       # название окна
 
 surface_menu.fill(bgcolor)
 
-image = pygame.image.load('2.png').convert()
+image = pygame.image.load('1.jpg').convert()
+#image = pygame.image.load('2.png').convert()
 
 def game_play(x, player):
 
@@ -96,6 +97,7 @@ def game_play(x, player):
             if igame.type == pygame.KEYDOWN:
                 if igame.key == pygame.K_ESCAPE:
                     done_game = False
+                    #main_menu()
                 elif igame.key == pygame.K_DOWN or igame.key == pygame.K_s:
                     if map[int(ypl / size) + 1][int(xpl / size)] == 2 or map[int(ypl / size) + 1][int(xpl / size)] == 3 or map[int(ypl / size) + 1][int(xpl / size)] == 'f':
                         pygame.draw.rect(surface_menu, gamedraw, (xpl, ypl, size, size))

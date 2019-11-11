@@ -13,14 +13,14 @@ def selection_sort(nums):
 #time_out = 50
 #x = 20
 #y = 20
-#print(__doc__)
 #player = input('введите ник: ')      # никнейм игрока
 
 def add_points(x, y, time_out, player):
     file_name = 'point.txt'                 # файл с текущими очками
     file_name2 = 'record.txt'               # файл с рекордными очками
     points = 0
-    delta = 100 * x * y // time_out               # очки, полученные игроком
+    delta = 2.2 * x * y // time_out               # очки, полученные игроком
+    delta = int(delta)
     changed_file = []
     changed_file2 = []
 
@@ -50,25 +50,31 @@ def add_points(x, y, time_out, player):
 
     # далее идёт сортировка
 
-    sort_changed_file = []
+    for i in range(2):
 
-    file_name = 'record.txt'
+        sort_changed_file = []
+        if i == 0:
 
-    with open(file_name, 'r') as f:
-        a = f.readlines()
+            file_name = 'record.txt'
+        else:
+            file_name = 'point.txt'
 
-    for i in range(len(a)):
-        sort_changed_file.append(a[i].split())  # неотсортированный двумерный список с никнеймами и очками
+        with open(file_name, 'r') as f:
+            a = f.readlines()
 
-    selection_sort(sort_changed_file)  # сортировка списка
-    sort_changed_file.reverse()
+        for i in range(len(a)):
+            sort_changed_file.append(a[i].split())  # неотсортированный двумерный список с никнеймами и очками
 
-    with open(file_name, 'w') as f:
-        f.seek(0)
-        for i in range(len(sort_changed_file)):
-            for j in range(2):
-                if j == 1:
-                    f.write(str(sort_changed_file[i][j]) + '\n')
-                else:
-                    f.write(str(sort_changed_file[i][j]) + ' ')
+        selection_sort(sort_changed_file)  # сортировка списка
+        sort_changed_file.reverse()
+
+        with open(file_name, 'w') as f:
+            f.seek(0)
+            for i in range(len(sort_changed_file)):
+                for j in range(2):
+                    if j == 1:
+                        f.write(str(sort_changed_file[i][j]) + '\n')
+                    else:
+                        f.write(str(sort_changed_file[i][j]) + ' ')
+
     return(delta)

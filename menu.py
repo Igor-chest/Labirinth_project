@@ -1,8 +1,3 @@
-# управление: работают все кнопки
-# переключение между разделами осуществляется путем нажатия клавиш вверх ивниз или w и s,
-# чтобы выбрать раздел в меню нужно нажать enter или e,
-# чтобы выйти из раздела нужно нажать esc
-
 import pygame
 import sys
 from game_play import *
@@ -176,6 +171,41 @@ def statistics():
             if istat.type == pygame.QUIT:
                 sys.exit()
 
+def write_mode(description, sc):
+    clock = pygame.time.Clock()
+    pygame.init()
+    text = []
+    f = pygame.font.Font(None, 28)
+    text1 = f.render(description, 1, (180, 60, 0))
+    sc.blit(text1, (222, 260))
+    done_write = True
+    while done_write:
+        pygame.display.update()
+        font = pygame.font.Font(None, 40)
+        DrawText('обычный режим', font, surface_menu, 75, 50)
+        DrawText('пользовательский режим', font, surface_menu, 425, 50)
+        for iwrite in pygame.event.get():
+            if iwrite.type == pygame.KEYDOWN:
+                if iwrite.key == pygame.K_ESCAPE:
+                    main_menu()
+                    break
+                if iwrite.key == pygame.K_KP_ENTER or iwrite.key == pygame.K_e:
+                    return "".join(text)
+                if iwrite.key == pygame.K_BACKSPACE:
+                    if text.__len__():
+                        text.pop()
+                        pygame.draw.rect(surface_menu, (55, 55, 55), (220, 250, 340, 100))
+                        pygame.draw.rect(surface_menu, font_color, (220, 250, 340, 100), 4)
+                        sc.blit(text1, (222, 260))
+                elif text.__len__() < 3:
+                    text.append(iwrite.unicode)
+                f = pygame.font.Font(None, 40)
+                text2 = f.render("".join(text), 1, font_color)
+                sc.blit(text2, (383, 300))
+            if iwrite.type == pygame.QUIT:
+                sys.exit()
+            clock.tick(30)
+
 def mode():
 
     x = downloadGen(player)
@@ -189,10 +219,14 @@ def mode():
 
     pygame.draw.line(surface_menu, font_color, [surface_width / 2, 0], [surface_width / 2, 600], 9)
 
-    mode = 0
+    mode = 0   # режим обычной игры
 
     done_mode = True
     while done_mode:
+
+        font = pygame.font.Font(None, 40)
+        DrawText('обычный режим', font, surface_menu, 75, 50)
+        DrawText('пользовательский режим', font, surface_menu, 425, 50)
 
         surface_menu.blit(surface_menu, (0, 0))
         pygame.display.flip()
@@ -201,20 +235,27 @@ def mode():
         if mode == 0:
             pygame.draw.rect(surface_menu, right_panel, (0, 0, 405, 600))
             pygame.draw.line(surface_menu, font_color, [surface_width / 2, 0], [surface_width / 2, 600], 9)
+            pygame.draw.line(surface_menu, font_color, [0, 3], [surface_width / 2, 3], 9)
+            pygame.draw.line(surface_menu, font_color, [3, 0], [3, 600], 9)
+            pygame.draw.line(surface_menu, font_color, [0, 597], [surface_width / 2, 597], 9)
         else:
             pygame.draw.rect(surface_menu, right_panel, (405, 0, 800, 600))
             pygame.draw.line(surface_menu, font_color, [surface_width / 2, 0], [surface_width / 2, 600], 9)
+            pygame.draw.line(surface_menu, font_color, [800, 3], [surface_width / 2, 3], 9)
+            pygame.draw.line(surface_menu, font_color, [797, 0], [797, 600], 9)
+            pygame.draw.line(surface_menu, font_color, [800, 597], [surface_width / 2, 597], 9)
             if window == True:
                 pygame.draw.rect(surface_menu, (55, 55, 55), (220, 250, 340, 100))
                 pygame.draw.rect(surface_menu, font_color, (220, 250, 340, 100), 4)
                 font = pygame.font.Font(None, 28)
-                DrawText('введите размер лабиринта(<= 100)', font, surface_menu, 222, 260)
                 DrawText(window_txt, font, surface_menu, 425, 60)
-                #window_txt = window_txt + a
-
-        font = pygame.font.Font(None, 40)
-        DrawText('обычный режим', font, surface_menu, 75, 50)
-        DrawText('пользовательский режим', font, surface_menu, 425, 50)
+                text = write_mode('введите размер лабиринта(<= 100)', surface_menu)
+                done_mode = False
+                text = int(text)
+                if text <= 100:
+                    game_play(text, player, mode)
+                else:
+                    main_menu()
 
         for imode in pygame.event.get():
             if imode.type == pygame.KEYDOWN:
@@ -224,10 +265,9 @@ def mode():
                 elif imode.key == pygame.K_e or imode.key == pygame.K_KP_ENTER:
                     if mode == 0:
                         done_mode = False
-                        game_play(x, player)
+                        game_play(x, player, mode)
                     else:
                         window = True
-
                 elif imode.key == pygame.K_RIGHT or imode.key == pygame.K_LEFT or imode.key == pygame.K_d or imode.key == pygame.K_a:
                     window = False
                     if mode == 0:
@@ -236,28 +276,5 @@ def mode():
                         mode = 0
             elif imode.type == pygame.QUIT:
                 sys.exit()
-
-#x = 50
-#y = 50
 player = 'igor'
 main_menu()
-#mode()
-#game_play()
-#statistics()
-#settings()
-'''
-                done_game_over = True
-                while done_game_over:
-                    for igameover in pygame.event.get():
-                        if igameover.type == pygame.KEYDOWN:
-                            if igameover.key == pygame.K_ESCAPE:
-                                main_menu()
-                                
-                                
-                        if imode.type == pygame.KEYDOWN:
-                            if imode.unicode != " ":
-                                window_txt += imode.unicode
-                            elif imode.key == K_BACKSPACE:
-                                window_txt = window_txt[:-1]
-                                
-'''

@@ -29,7 +29,7 @@ surface_menu.fill(bgcolor)
 image = pygame.image.load('1.jpg').convert()
 #image = pygame.image.load('2.png').convert()
 
-def game_play(x, player):
+def game_play(x, player, mode):
 
     surface_menu.blit(surface_menu, (0, 0))
     surface_menu.fill((70, 40, 70))
@@ -87,7 +87,7 @@ def game_play(x, player):
                     changed_file.append(string.rstrip())
         DrawText(player + ' ' + str(points), font, surface_menu, 610, 100)
 
-        DrawText('размер: '+ str(x), font, surface_menu, 610, 150)
+        DrawText('размер: ' + str(x), font, surface_menu, 610, 150)
 
         font = pygame.font.Font(None, 72)
 
@@ -124,8 +124,6 @@ def game_play(x, player):
 
                 DrawText('Вы прошли уровень!!!', font, surface_menu, (surface_width / 2) - 350, (surface_height / 2.5) - 220)
 
-                DrawText('Лабиринт увеличился на ' + '2', font, surface_menu, (surface_width / 2) - 325, (surface_height / 2.5) - 165)
-
                 if int(time_stop) // 10 == 1:
                     seconds_draw = ' секунд'
                 elif int(time_stop) % 10 == 1:
@@ -137,13 +135,16 @@ def game_play(x, player):
 
                 DrawText('Ваше время: ' + time_stop + seconds_draw, font, surface_menu, (surface_width / 2) - 300, (surface_height / 2.5) - 110)
 
-                #map[int(ypl / size)][int(xpl / size) - 1] = 'fd'
-
-                delta = add_points(x, x, time_out, player)
-                DrawText('Полученные очки: ' + str(delta), font, surface_menu, (surface_width / 2) - 285, (surface_height / 2.5) - 55)
-
-                saveGen(player)
+                if mode == 0:
+                    delta = add_points(x, x, int(time_stop), player)
+                    DrawText('Полученные очки: ' + str(delta), font, surface_menu, (surface_width / 2) - 285, (surface_height / 2.5) - 55)
+                    saveGen(player)
+                    DrawText('Лабиринт увеличился на 2', font, surface_menu, (surface_width / 2) - 325,(surface_height / 2.5) - 165)
+                else:
+                    DrawText('Вы не получаете очки((', font, surface_menu, (surface_width / 2) - 285, (surface_height / 2.5) - 55)
+                    DrawText('Лабиринт не увеличился((', font, surface_menu, (surface_width / 2) - 325, (surface_height / 2.5) - 165)
 
                 done_game = False
             elif igame.type == pygame.QUIT:
                 sys.exit()
+

@@ -1,3 +1,4 @@
+Guest 0
 andrey 30050
 egor 25000
 igor 5800

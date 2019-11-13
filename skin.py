@@ -79,6 +79,7 @@ def choice_skin():
                         number += 1
                 pygame.draw.circle(surface_menu, font_color, (x_circle, y_circle), 27)
                 if i_skin.key == pygame.K_e or i_skin.key == pygame.K_KP_ENTER:
+                    global image
                     if number == 1:
                         image = pygame.image.load('1.jpg').convert()
                     elif number == 2:
@@ -89,9 +90,10 @@ def choice_skin():
                         image = pygame.image.load('4.jpg').convert()
                     elif number == 5:
                         image = pygame.image.load('5.jpg').convert()
-                    return image
+                    done_skin = False
 
             if i_skin.type == pygame.QUIT:
                 sys.exit()
 
-skin = choice_skin()
+choice_skin()
+

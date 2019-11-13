@@ -95,5 +95,5 @@ def choice_skin():
             if i_skin.type == pygame.QUIT:
                 sys.exit()
 
-choice_skin()
+#choice_skin()
 

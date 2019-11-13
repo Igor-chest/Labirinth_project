@@ -23,6 +23,7 @@ pygame.display.set_caption("Labirinth")  # название окна
 surface_menu.fill(bgcolor)  # покраска окна в цвет заднего фона
 
 def choice_skin():
+    global image
     surface_menu.fill(bgcolor)
     font = pygame.font.Font(None, 72)
     DrawText('Выбор персонажа', font, surface_menu, (surface_width / 2) - 220, (surface_height / 2.5) - 220)
@@ -79,7 +80,6 @@ def choice_skin():
                         number += 1
                 pygame.draw.circle(surface_menu, font_color, (x_circle, y_circle), 27)
                 if i_skin.key == pygame.K_e or i_skin.key == pygame.K_KP_ENTER:
-                    global image
                     if number == 1:
                         image = pygame.image.load('1.jpg').convert()
                     elif number == 2:

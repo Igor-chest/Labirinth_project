@@ -36,9 +36,9 @@ def newProfile(name, password):
     file = open('password.txt', 'a')
     file.write(name + '\n')
     file.write(password + '\n')
-    for fName in(('point.txt',0), ('record.txt',0),('save.txt',5)):
+    for fName in(('point.txt','0'), ('record.txt','0'),('save.txt','5')):
         file=open(fName[0], 'a')
-        file.write(name + "5\n")
+        file.write(name + ' '+fName[1]+'\n')
         file.close()
     return name
 

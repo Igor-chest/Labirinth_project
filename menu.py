@@ -22,6 +22,8 @@ def write(description,color,sc):  #description - обращение к поль�
     while 1:
         for i in pygame.event.get():
             if i.type==pygame.KEYDOWN:
+                if i.key == pygame.K_ESCAPE:
+                    return ''
                 if i.key == pygame.K_RETURN or i.type==pygame.K_KP_ENTER:
                     sc.fill(color)
                     return "".join(text)
@@ -30,12 +32,16 @@ def write(description,color,sc):  #description - обращение к поль�
                      text.pop()
                      sc.fill(color)             #здесь очищается весь экран.
                      sc.blit(text1, (10, 50))   #координаты обращени
-                elif text.__len__()<20:
+                elif text.__len__()<15:
                     text.append(i.unicode)
                 text2 = f2.render("".join(text), 0, (255, 255, 153))
                 sc.blit(text2, (10, 250))     #координаты ввода
                 pygame.display.update()
+            elif i.type == pygame.QUIT:
+                sys.exit()
             clock.tick(30)
+
+
 
 def DrawText(text, font, surface_menu, x, y):
     textobj = font.render(text, 1, font_color)
@@ -69,6 +75,7 @@ surface_menu.fill(bgcolor)  # покраска окна в цвет заднег
 
 player = 'Guest'
 
+image = pygame.image.load('1.jpg').convert()
 
 # функция главного меню
 
@@ -77,15 +84,8 @@ player = 'Guest'
 def main_menu(sections):  # sections=((name1,function1,0/underSections),...,(name4,function4,0/underSections))
 
     surface_menu.fill(bgcolor)
-
-    # координаты для каждого раздела меню
-
-
-
-
-
-
-
+    flag5 = len(sections)==5
+    # координаты для каждого раздела
     xg = (surface_width / 2) - 360
 
     yg = (surface_height / 2.5) - 90
@@ -102,14 +102,13 @@ def main_menu(sections):  # sections=((name1,function1,0/underSections),...,(nam
 
     yq = (surface_height / 2.5) + 60
 
+    xsc = (surface_width / 2) - 360
+
+    ysc = (surface_height / 2.5) + 110
+
     font = pygame.font.Font(None, 72)
 
     # вывод каждого раздела меню
-
-
-
-
-
 
 
     DrawText(sections[0][0], font, surface_menu, xg, yg)
@@ -120,12 +119,9 @@ def main_menu(sections):  # sections=((name1,function1,0/underSections),...,(nam
 
     DrawText(sections[3][0], font, surface_menu, xq, yq)
 
+    if flag5:
+        DrawText(sections[4][0], font, surface_menu, xsc, ysc)
     # вывод круга слева от раздела 'Игра'
-
-
-
-
-
 
 
     pygame.draw.circle(surface_menu, font_color, (int(xg) - 19, int(yg) + 23), 15)
@@ -165,7 +161,7 @@ def main_menu(sections):  # sections=((name1,function1,0/underSections),...,(nam
 
                         pygame.draw.circle(surface_menu, bgcolor, (x_circle, y_circle), 15)
 
-                        y_circle += 150
+                        y_circle += 150 + 50*flag5
 
                         pygame.draw.circle(surface_menu, font_color, (x_circle, y_circle), 15)
 
@@ -185,11 +181,11 @@ def main_menu(sections):  # sections=((name1,function1,0/underSections),...,(nam
 
 
 
-                    if y_circle == dy_circle + 150:
+                    if y_circle == dy_circle + 150 + 50*flag5:
 
                         pygame.draw.circle(surface_menu, bgcolor, (x_circle, y_circle), 15)
 
-                        y_circle -= 150
+                        y_circle -= 150 + 50*flag5
 
                         pygame.draw.circle(surface_menu, font_color, (x_circle, y_circle), 15)
 
@@ -248,9 +244,6 @@ def main_menu(sections):  # sections=((name1,function1,0/underSections),...,(nam
                     elif y_circle == dy_circle + 150:
 
                         # done_main = False
-
-
-
                         if sections[3][2]:
 
                             sections[3][1](sections[3][2])
@@ -259,7 +252,14 @@ def main_menu(sections):  # sections=((name1,function1,0/underSections),...,(nam
 
                             sections[3][1]()
 
+                    elif y_circle == dy_circle + 200:
+                        if sections[4][2]:
 
+                            sections[4][1](sections[4][2])
+
+                        else:
+
+                            sections[4][1]()
 
             elif i.type == pygame.QUIT:
 
@@ -301,7 +301,7 @@ def statistics():
 
             txt = 'Максимальные очки:'
 
-            step += 180
+            step += 360
 
         with open(file_name, 'r') as f:
 
@@ -472,7 +472,7 @@ def mode():
 
                 if text <= 100:
 
-                    game_play(text, player, mode)
+                    game_play(text, player, mode, image)
 
                 else:
 
@@ -494,7 +494,7 @@ def mode():
 
                         done_mode = False
 
-                        game_play(x, player, mode)
+                        game_play(x, player, mode, image)
 
                     else:
 
@@ -515,6 +515,144 @@ def mode():
             elif imode.type == pygame.QUIT:
 
                 sys.exit()
+
+def choice_skin():
+
+    global image
+
+    surface_menu.fill(bgcolor)
+
+    font = pygame.font.Font(None, 72)
+
+    DrawText('Выбор персонажа', font, surface_menu, (surface_width / 2) - 220, (surface_height / 2.5) - 220)
+
+
+
+    x = 100
+
+    y = 100
+
+    x_circle = x - 35
+
+    y_circle = y + 37    # 137
+
+
+
+    number = 1
+    for i_skin in range(5):
+
+        if i_skin == 0:
+
+            image = pygame.image.load('1.jpg').convert()
+
+        elif i_skin == 1:
+
+            image = pygame.image.load('2.png').convert()
+
+        elif i_skin == 2:
+
+            image = pygame.image.load('3.jpg').convert()
+
+        elif i_skin == 3:
+
+            image = pygame.image.load('4.jpg').convert()
+
+        elif i_skin == 4:
+
+            image = pygame.image.load('5.jpg').convert()
+
+        new_image = pygame.transform.scale(image, (70, 70))
+
+        surface_menu.blit(new_image, (x, y))
+
+        y += 80
+    done_skin = True
+
+    while done_skin:
+
+        surface_menu.blit(surface_menu, (0, 0))
+
+
+
+        pygame.display.flip()
+
+
+
+        pygame.draw.circle(surface_menu, font_color, (x_circle, y_circle), 27)
+
+
+
+        for i_skin in pygame.event.get():  # цикл с событиями
+
+            if i_skin.type == pygame.KEYDOWN:
+
+                if i_skin.key == pygame.K_ESCAPE:
+
+                    main_menu(settingsSections)
+
+                if i_skin.key == pygame.K_w or i_skin.key == pygame.K_UP:
+
+                    pygame.draw.circle(surface_menu, bgcolor, (x_circle, y_circle), 27)
+
+                    if y_circle == 137:
+
+                        y_circle = 457
+
+                        number = 5
+
+                    else:
+
+                        y_circle -= 80
+
+                        number -= 1
+
+                if i_skin.key == pygame.K_s or i_skin.key == pygame.K_DOWN:
+
+                    pygame.draw.circle(surface_menu, bgcolor, (x_circle, y_circle), 27)
+
+                    if y_circle == 457:
+
+                        y_circle = 137
+
+                        number = 1
+
+                    else:
+
+                        y_circle += 80
+
+                        number += 1
+
+                pygame.draw.circle(surface_menu, font_color, (x_circle, y_circle), 27)
+
+                if i_skin.key == pygame.K_e or i_skin.key == pygame.K_KP_ENTER or i_skin.key == pygame.K_RETURN:
+
+                    if number == 1:
+
+                        image = pygame.image.load('1.jpg').convert()
+
+                    elif number == 2:
+
+                        image = pygame.image.load('2.png').convert()
+
+                    elif number == 3:
+
+                        image = pygame.image.load('3.jpg').convert()
+
+                    elif number == 4:
+
+                        image = pygame.image.load('4.jpg').convert()
+
+                    elif number == 5:
+
+                        image = pygame.image.load('5.jpg').convert()
+
+                    main_menu(mainSections)
+                    done_skin = False
+
+            if i_skin.type == pygame.QUIT:
+
+                sys.exit()
+
 
 
 def enter():
@@ -552,9 +690,17 @@ def create():
 def edit():
     global player
 
-    newName = write("Введите имя", bgcolor, surface_menu)
+    if player=="Guest":
+        wrongScrean("Вы не авторизованы", "Нажмите Esc для продолжения")
+        main_menu(settingsSections)
 
-    if editProfile(player, newName, write("Введите пароль", bgcolor, surface_menu), ('point.txt', 'record.txt','save.txt')):
+    if not authorization(player, write("Подтвердите пароль", bgcolor, surface_menu)):
+        wrongScrean("Пароль введён неверно", "Нажмите Esc для повторной авторизации")
+        player="Guest"
+        enter()
+
+    newName = write("Введите новое имя", bgcolor, surface_menu)
+    if editProfile(player, newName, write("Введите новый пароль", bgcolor, surface_menu), ('point.txt', 'record.txt','save.txt')):
 
         player = newName
 
@@ -639,10 +785,8 @@ def wrongScrean(description1, description2):
                     return True
 
 
-settingsSections = (
-('Войти', enter, 0), ('Создать профиль', create, 0), ('Изменить профиль', edit, 0), ('Сбросить прогресс', again, 0))
+settingsSections = (('Войти', enter, 0), ('Создать профиль', create, 0), ('Изменить профиль', edit, 0), ('Сбросить прогресс', again, 0), ('Выбор персонажа', choice_skin, 0))
 
-mainSections = (
-('Игра', mode, 0), ('Настройки', main_menu, settingsSections), ('Статистика', statistics, 0), ('Выход', sys.exit, 0))
+mainSections = (('Игра', mode, 0), ('Настройки', main_menu, settingsSections), ('Статистика', statistics, 0), ('Выход', sys.exit, 0))
 
 main_menu(mainSections)

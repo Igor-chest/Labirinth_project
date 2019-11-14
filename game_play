@@ -26,10 +26,7 @@ pygame.display.set_caption("Labirinth")       # название окна
 
 surface_menu.fill(bgcolor)
 
-image = pygame.image.load('1.jpg').convert()
-#image = pygame.image.load('2.png').convert()
-
-def game_play(x, player, mode):
+def game_play(x, player, mode, image):
 
     surface_menu.blit(surface_menu, (0, 0))
     surface_menu.fill((70, 40, 70))

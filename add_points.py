@@ -43,7 +43,7 @@ def add_points(x, y, time_out, player):
 
     if items[1] == items2[1]:
         changed_file2.append(player + ' ' + str(new_points))
-        f2 = open(file_name2, 'w').write("\n".join(changed_file2))
+        f2 = open(file_name2, 'w').write("\n".join(changed_file2)+'\n')
 
     changed_file.append(player + ' ' + str(new_points))  # добавляем в файл информацию об очках игрока
     f = open(file_name, 'w').write("\n".join(changed_file))  # открываем файл для перезаписи

@@ -176,7 +176,7 @@ def saveGen(player):
                 changed_file_save.append(string.rstrip())  # .rstrip() удаляет символ \n
 
     changed_file_save.append(player + ' ' + str(x + 2))  # добавляем в файл информацию об очках игрока
-    open('save.txt', 'w').write("\n".join(changed_file_save))
+    open('save.txt', 'w').write("\n".join(changed_file_save)+'\n')
 
 
 '''

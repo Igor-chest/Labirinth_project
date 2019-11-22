@@ -71,7 +71,8 @@ def game_play(x, player, mode, image):
 
         time_out += 1
         pygame.draw.rect(surface_menu, right_panel, (600, 0, 600, 800))
-        DrawText('время: ' + str(time_out // 85), font, surface_menu, 610, 50)
+        DrawText('время:', font, surface_menu, 610, 50)
+        DrawText(str(time_out // 85), font, surface_menu, 610, 90)
 
         file_name = 'point.txt'
         changed_file = []
@@ -82,9 +83,11 @@ def game_play(x, player, mode, image):
                     points = int(items[1])
                 else:
                     changed_file.append(string.rstrip())
-        DrawText(player + ' ' + str(points), font, surface_menu, 610, 100)
+        DrawText(player, font, surface_menu, 610, 150)
+        DrawText(str(points), font, surface_menu, 610, 190)
 
-        DrawText('размер: ' + str(x), font, surface_menu, 610, 150)
+        DrawText('размер:', font, surface_menu, 610, 250)
+        DrawText(str(x) + 'x' + str(x), font, surface_menu, 610, 290)
 
         font = pygame.font.Font(None, 72)
 
@@ -94,7 +97,6 @@ def game_play(x, player, mode, image):
             if igame.type == pygame.KEYDOWN:
                 if igame.key == pygame.K_ESCAPE:
                     done_game = False
-                    #main_menu()
                 elif igame.key == pygame.K_DOWN or igame.key == pygame.K_s:
                     if map[int(ypl / size) + 1][int(xpl / size)] == 2 or map[int(ypl / size) + 1][int(xpl / size)] == 3 or map[int(ypl / size) + 1][int(xpl / size)] == 'f':
                         pygame.draw.rect(surface_menu, gamedraw, (xpl, ypl, size, size))
@@ -118,6 +120,8 @@ def game_play(x, player, mode, image):
             if map[int(ypl / size)][int(xpl / size) - 1] == 'f':
                 surface_menu.fill(bgcolor)
                 time_stop = str(time_out // 85)
+                if float(time_stop) < 1:
+                    time_stop = '1'
 
                 DrawText('Вы прошли уровень!!!', font, surface_menu, (surface_width / 2) - 350, (surface_height / 2.5) - 220)
 
@@ -144,4 +148,3 @@ def game_play(x, player, mode, image):
                 done_game = False
             elif igame.type == pygame.QUIT:
                 sys.exit()
-

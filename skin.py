@@ -1,5 +1,6 @@
 import pygame
 import sys
+from hash import hashFile
 
 def DrawText(text, font, surface_menu, x, y):
     textobj = font.render(text, 1, font_color)
@@ -93,6 +94,8 @@ def choice_skin():
                     done_skin = False
 
             if i_skin.type == pygame.QUIT:
+                for i in ('point.txt', 'record.txt', 'save.txt', 'password.txt'):
+                    hashFile(i)
                 sys.exit()
 
 #choice_skin()

@@ -2,6 +2,7 @@ import pygame
 import sys
 from gen import *
 from add_points import *
+from hash import hashFile
 #from test import *
 
 def DrawText(text, font, surface_menu, x, y):
@@ -147,4 +148,6 @@ def game_play(x, player, mode, image):
 
                 done_game = False
             elif igame.type == pygame.QUIT:
+                for i in ('point.txt', 'record.txt', 'save.txt', 'password.txt'):
+                    hashFile(i)
                 sys.exit()

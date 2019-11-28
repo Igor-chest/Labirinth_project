@@ -1,6 +1,8 @@
+
 import pygame
 
 import sys
+from hash import hashFile
 from profile import *
 from game_play import *
 
@@ -38,6 +40,8 @@ def write(description,color,sc):  #description - обращение к поль�
                 sc.blit(text2, (10, 250))     #координаты ввода
                 pygame.display.update()
             elif i.type == pygame.QUIT:
+                for i in ('point.txt', 'record.txt', 'save.txt', 'password.txt'):
+                    hashFile(i)
                 sys.exit()
             clock.tick(30)
 
@@ -76,6 +80,9 @@ surface_menu.fill(bgcolor)  # покраска окна в цвет заднег
 player = 'Guest'
 
 image = pygame.image.load('1.jpg').convert()
+
+allFiles=('point.txt', 'record.txt', 'save.txt', 'password.txt')
+
 
 # функция главного меню
 
@@ -262,8 +269,7 @@ def main_menu(sections):  # sections=((name1,function1,0/underSections),...,(nam
                             sections[4][1]()
 
             elif i.type == pygame.QUIT:
-
-                sys.exit()
+                exit()
 
 
 # функция раздела статистики
@@ -332,7 +338,7 @@ def statistics():
                     main_menu(mainSections)
 
             if istat.type == pygame.QUIT:
-                sys.exit()
+                exit()
 
 
 def write_mode(description, sc):
@@ -394,7 +400,7 @@ def write_mode(description, sc):
                 sc.blit(text2, (383, 300))
 
             if iwrite.type == pygame.QUIT:
-                sys.exit()
+                exit()
 
             clock.tick(30)
 
@@ -513,8 +519,8 @@ def mode():
                         mode = 0
 
             elif imode.type == pygame.QUIT:
+                exit()
 
-                sys.exit()
 
 def choice_skin():
 
@@ -650,8 +656,7 @@ def choice_skin():
                     done_skin = False
 
             if i_skin.type == pygame.QUIT:
-
-                sys.exit()
+                exit()
 
 
 
@@ -660,7 +665,7 @@ def enter():
 
     newName = write("Введите имя", bgcolor, surface_menu)
 
-    if newName == "Гость" or authorization(newName, write("Введите пароль", bgcolor, surface_menu)):
+    if newName == "Guest" or authorization(newName, write("Введите пароль", bgcolor, surface_menu)):
 
         player = newName
 
@@ -785,8 +790,13 @@ def wrongScrean(description1, description2):
                     return True
 
 
+def exit():
+    for i in ('point.txt', 'record.txt', 'save.txt', 'password.txt'):
+        hashFile(i)
+    sys.exit()
+
 settingsSections = (('Войти', enter, 0), ('Создать профиль', create, 0), ('Изменить профиль', edit, 0), ('Сбросить прогресс', again, 0), ('Выбор персонажа', choice_skin, 0))
 
-mainSections = (('Игра', mode, 0), ('Настройки', main_menu, settingsSections), ('Статистика', statistics, 0), ('Выход', sys.exit, 0))
+mainSections = (('Игра', mode, 0), ('Настройки', main_menu, settingsSections), ('Статистика', statistics, 0), ('Выход', exit, 0))
 
 main_menu(mainSections)

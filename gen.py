@@ -19,6 +19,7 @@ zCount - кол-во не занятых клеток
 point - текущая позиция(начальная)
 '''
 def line(map,x,y,zCount,point):
+    saveCount=zCount
     sym=2
     nSym=3
     road=[0,1]
@@ -38,6 +39,14 @@ def line(map,x,y,zCount,point):
         while flag:
             if not pWays:
                 labPrint(map,x,y)
+                for i in range(x):  # удаляет ответвление из-за ошибки генерации
+                    for j in range(y):
+                        if map[i][j] == 4:
+                            map[i][j] = 0
+                        if map[i][j] == 5:
+                            map[i][j] = 0
+                return saveCount 
+                    
             r=pWays[random.randint(0,len(pWays)-1)]
             if map[point[0]+r[0]][point[1]+r[1]] in road and choose(map,x,y,point,[r[0],r[1]],sym,road,nSym):
                 way = r

@@ -26,6 +26,7 @@ surface_menu = pygame.display.set_mode([surface_width, surface_height])         
 pygame.display.set_caption("Labirinth")       # название окна
 
 surface_menu.fill(bgcolor)
+clock = pygame.time.Clock()
 
 def game_play(x, player, mode, image):
 
@@ -73,7 +74,7 @@ def game_play(x, player, mode, image):
         time_out += 1
         pygame.draw.rect(surface_menu, right_panel, (600, 0, 600, 800))
         DrawText('время:', font, surface_menu, 610, 50)
-        DrawText(str(time_out // 85), font, surface_menu, 610, 90)
+        DrawText(str(time_out // 20), font, surface_menu, 610, 90)
 
         file_name = 'point.txt'
         changed_file = []
@@ -120,7 +121,7 @@ def game_play(x, player, mode, image):
                         surface_menu.blit(new_image, (xpl, ypl))
             if map[int(ypl / size)][int(xpl / size) - 1] == 'f':
                 surface_menu.fill(bgcolor)
-                time_stop = str(time_out // 85)
+                time_stop = str(time_out // 20)
                 if float(time_stop) < 1:
                     time_stop = '1'
 
@@ -141,13 +142,16 @@ def game_play(x, player, mode, image):
                     delta = add_points(x, x, int(time_stop), player)
                     DrawText('Полученные очки: ' + str(delta), font, surface_menu, (surface_width / 2) - 285, (surface_height / 2.5) - 55)
                     saveGen(player)
-                    DrawText('Лабиринт увеличился на 2', font, surface_menu, (surface_width / 2) - 325,(surface_height / 2.5) - 165)
+                    DrawText('Лабиринт увеличился на 2', font, surface_menu, (surface_width / 2) - 325, (surface_height / 2.5) - 165)
                 else:
                     DrawText('Вы не получаете очки((', font, surface_menu, (surface_width / 2) - 285, (surface_height / 2.5) - 55)
                     DrawText('Лабиринт не увеличился((', font, surface_menu, (surface_width / 2) - 325, (surface_height / 2.5) - 165)
+                pygame.display.update()
+
 
                 done_game = False
             elif igame.type == pygame.QUIT:
                 for i in ('point.txt', 'record.txt', 'save.txt', 'password.txt'):
                     hashFile(i)
                 sys.exit()
+        clock.tick(20)

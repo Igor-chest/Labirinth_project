@@ -1,14 +1,52 @@
-def selection_sort(nums):
-    # значение i соответствует тому, сколько значений было отсортировано
-    for i in range(len(nums)):
-        # Мы предполагаем, что первый элемент несортированного сегмента является наименьшим
-        lowest_value_index = i
-        # Этот цикл перебирает несортированные элементы
-        for j in range(i + 1, len(nums)):
-            if nums[j][1] < nums[lowest_value_index][1]:
-                lowest_value_index = j
-        # Поменять местами значения самого низкого несортированного элемента с первым несортированным
-        nums[i], nums[lowest_value_index] = nums[lowest_value_index], nums[i]
+def merge(left_list, right_list):
+    sorted_list = []
+    left_list_index = right_list_index = 0
+
+    # Длина списков часто используется, поэтому создадим переменные для удобства
+    left_list_length, right_list_length = len(left_list), len(right_list)
+
+    for _ in range(left_list_length + right_list_length):
+        if left_list_index < left_list_length and right_list_index < right_list_length:
+            # Сравниваем первые элементы в начале каждого списка
+            # Если первый элемент левого подсписка меньше, добавляем его
+            # в отсортированный массив
+            if int(left_list[left_list_index][1]) <= int(right_list[right_list_index][1]):
+                sorted_list.append(left_list[left_list_index])
+                left_list_index += 1
+            # Если первый элемент правого подсписка меньше, добавляем его
+            # в отсортированный массив
+            else:
+                sorted_list.append(right_list[right_list_index])
+                right_list_index += 1
+
+        # Если достигнут конец левого списка, элементы правого списка
+        # добавляем в конец результирующего списка
+        elif left_list_index == left_list_length:
+            sorted_list.append(right_list[right_list_index])
+            right_list_index += 1
+        # Если достигнут конец правого списка, элементы левого списка
+        # добавляем в отсортированный массив
+        elif right_list_index == right_list_length:
+            sorted_list.append(left_list[left_list_index])
+            left_list_index += 1
+
+    return sorted_list
+
+def merge_sort(nums):
+    # Возвращаем список, если он состоит из одного элемента
+    if len(nums) <= 1:
+        return nums
+
+    # Для того чтобы найти середину списка, используем деление без остатка
+    # Индексы должны быть integer
+    mid = len(nums) // 2
+
+    # Сортируем и объединяем подсписки
+    left_list = merge_sort(nums[:mid])
+    right_list = merge_sort(nums[mid:])
+
+    # Объединяем отсортированные списки в результирующий
+    return merge(left_list, right_list)
 
 #time_out = 50
 #x = 20
@@ -43,10 +81,13 @@ def add_points(x, y, time_out, player):
 
     if items[1] == items2[1]:
         changed_file2.append(player + ' ' + str(new_points))
-        f2 = open(file_name2, 'w').write("\n".join(changed_file2))
+        f = open(file_name2, 'w').write("\n".join(changed_file2))
 
     changed_file.append(player + ' ' + str(new_points))  # добавляем в файл информацию об очках игрока
-    f = open(file_name, 'w').write("\n".join(changed_file)+'\n')  # открываем файл для перезаписи
+    f2 = open(file_name, 'w').write("\n".join(changed_file) + '\n')  # открываем файл для перезаписи
+
+    #f.close()
+    #f2.close()
 
     # далее идёт сортировка
 
@@ -54,27 +95,26 @@ def add_points(x, y, time_out, player):
 
         sort_changed_file = []
         if i == 0:
-
-            file_name = 'record.txt'
-        else:
             file_name = 'point.txt'
+        else:
+            file_name = 'record.txt'
 
         with open(file_name, 'r') as f:
             a = f.readlines()
 
-        for i in range(len(a)):
-            sort_changed_file.append(a[i].split())  # неотсортированный двумерный список с никнеймами и очками
-
-        selection_sort(sort_changed_file)  # сортировка списка
+        for j in range(len(a)):
+            sort_changed_file.append(a[j].split())  # неотсортированный двумерный список с никнеймами и очками
+        
+        sort_changed_file = merge_sort(sort_changed_file)
         sort_changed_file.reverse()
 
         with open(file_name, 'w') as f:
             f.seek(0)
-            for i in range(len(sort_changed_file)):
+            for i2 in range(len(sort_changed_file)):
                 for j in range(2):
                     if j == 1:
-                        f.write(str(sort_changed_file[i][j]) + '\n')
+                        f.write(str(sort_changed_file[i2][j]) + '\n')
                     else:
-                        f.write(str(sort_changed_file[i][j]) + ' ')
+                        f.write(str(sort_changed_file[i2][j]) + ' ')
 
-    return(delta)
+    return delta
